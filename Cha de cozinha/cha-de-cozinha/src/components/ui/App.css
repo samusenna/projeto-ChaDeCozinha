@@ -1,7 +1,7 @@
-@import "tw-animate-css";
-@import "tailwindcss/base";
-@import "tailwindcss/components";
-@import "tailwindcss/utilities";
+@tw-animate-css;
+@tailwindcss base;
+@tailwindcss components;
+@tailwindcss utilities";
 
 @custom-variant dark (&:is(.dark *)); 
 @theme inline {
@@ -42,7 +42,7 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
-:root {
+:ro ot {
   --radius: 0.625rem;
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
