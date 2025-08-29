@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
-import { Button } from '@/components/ui/button.jsx'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card.jsx'
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog.jsx'
-import { Input } from '@/components/ui/input.jsx'
-import { Label } from '@/components/ui/label.jsx'
+import { Button } from './button.jsx'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './card.jsx'
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from './dialog.jsx'
+import { Input } from './input.jsx'
+import { Label } from './label.jsx'
 import { Gift, Heart, CheckCircle, AlertCircle } from 'lucide-react'
 import './App.css'
 
@@ -16,90 +16,37 @@ function App() {
   const [tipoMensagem, setTipoMensagem] = useState('sucesso') // 'sucesso' ou 'erro'
   const [carregando, setCarregando] = useState(false)
 
-  // URL base da API - ajustar conforme necessário
-  const API_BASE = 'http://localhost:5001/api'
-
+  // Simulação de dados mockados
   useEffect(() => {
-    carregarPresentes()
+    const presentesFake = [
+      { id: 1, nome: 'Panela', cor: 'Vermelha' },
+      { id: 2, nome: 'Conjunto de Facas', cor: 'Prata' },
+      { id: 3, nome: 'Jogo de Pratos', cor: 'Branco' },
+    ]
+    setPresentes(presentesFake)
   }, [])
-
-  const carregarPresentes = async () => {
-    try {
-      setCarregando(true)
-      const response = await fetch(`${API_BASE}/presentes`)
-      if (response.ok) {
-        const data = await response.json()
-        setPresentes(data)
-      } else {
-        throw new Error('Erro ao carregar presentes')
-      }
-    } catch (error) {
-      console.error('Erro ao carregar presentes:', error)
-      setMensagem('Erro ao carregar a lista de presentes. Tente recarregar a página.')
-      setTipoMensagem('erro')
-    } finally {
-      setCarregando(false)
-    }
-  }
 
   const handleEscolherPresente = (presente) => {
     setPresenteSelecionado(presente)
     setDialogAberto(true)
   }
 
-  const handleConfirmarEscolha = async () => {
+  const handleConfirmarEscolha = () => {
     if (!nomeConvidado.trim()) {
       setMensagem('Por favor, digite seu nome.')
       setTipoMensagem('erro')
       return
     }
 
-    try {
-      setCarregando(true)
-      
-      const dadosEscolha = {
-        convidado: nomeConvidado.trim(),
-        presente: presenteSelecionado.nome,
-        cor: presenteSelecionado.cor
-      }
+    // Simulação de sucesso
+    setMensagem(`Obrigado, ${nomeConvidado}! Sua escolha foi registrada: ${presenteSelecionado.nome} ${presenteSelecionado.cor}.`)
+    setTipoMensagem('sucesso')
 
-      const response = await fetch(`${API_BASE}/escolher-presente`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(dadosEscolha)
-      })
+    setNomeConvidado('')
+    setPresenteSelecionado(null)
+    setDialogAberto(false)
 
-      const resultado = await response.json()
-
-      if (response.ok) {
-        // Sucesso - recarregar lista de presentes
-        await carregarPresentes()
-        
-        setMensagem(`Obrigado, ${nomeConvidado}! Sua escolha foi registrada: ${presenteSelecionado.nome} ${presenteSelecionado.cor}.`)
-        setTipoMensagem('sucesso')
-        
-        // Limpar formulário e fechar dialog
-        setNomeConvidado('')
-        setPresenteSelecionado(null)
-        setDialogAberto(false)
-
-        // Limpar mensagem após 5 segundos
-        setTimeout(() => setMensagem(''), 5000)
-      } else {
-        // Erro do servidor
-        setMensagem(resultado.erro || 'Erro ao registrar sua escolha. Tente novamente.')
-        setTipoMensagem('erro')
-      }
-
-    } catch (error) {
-      console.error('Erro ao confirmar escolha:', error)
-      setMensagem('Erro de conexão. Verifique sua internet e tente novamente.')
-      setTipoMensagem('erro')
-    } finally {
-      setCarregando(false)
-    }
+    setTimeout(() => setMensagem(''), 5000)
   }
 
   const handleCancelar = () => {
@@ -140,17 +87,9 @@ function App() {
           </div>
         )}
 
-        {/* Indicador de carregamento */}
-        {carregando && (
-          <div className="text-center mb-6">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-b-2 border-rose-500"></div>
-            <p className="mt-2 text-gray-600">Carregando...</p>
-          </div>
-        )}
-
         {/* Lista de presentes */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          {presentes.map((presente) => (
+          {(presentes || []).map((presente) => (
             <Card key={presente.id} className="hover:shadow-lg transition-shadow duration-300 bg-white">
               <CardHeader className="text-center">
                 <div className="flex justify-center mb-2">
@@ -236,4 +175,3 @@ function App() {
 }
 
 export default App
-
