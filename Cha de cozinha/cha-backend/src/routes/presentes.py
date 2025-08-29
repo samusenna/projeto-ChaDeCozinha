@@ -11,13 +11,13 @@ CSV_FILE = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'database', 
 # Dados iniciais dos presentes
 PRESENTES_INICIAIS = [
     {'id': '1', 'nome': 'Batedeira', 'cor': 'Vermelha', 'disponivel': True},
-    {'id': '2', 'nome': 'Liquidificador', 'cor': 'Prata', 'disponivel': True},
-    {'id': '3', 'nome': 'Torradeira', 'cor': 'Branca', 'disponivel': True},
-    {'id': '4', 'nome': 'Cafeteira', 'cor': 'Preta', 'disponivel': True},
-    {'id': '5', 'nome': 'Processador de Alimentos', 'cor': 'Azul', 'disponivel': True},
+   {'id': '2', 'nome': 'Liquidificador', 'cor': 'Prata', 'disponivel': True},
+   {'id': '3', 'nome': 'Torradeira', 'cor': 'Branca', 'disponivel': True},
+   {'id': '4', 'nome': 'Cafeteira', 'cor': 'Preta', 'disponivel': True},
+   {'id': '5', 'nome': 'Processador de Alimentos', 'cor': 'Azul', 'disponivel': True},
     {'id': '6', 'nome': 'Micro-ondas', 'cor': 'Inox', 'disponivel': True},
     {'id': '7', 'nome': 'Sanduicheira', 'cor': 'Vermelha', 'disponivel': True},
-    {'id': '8', 'nome': 'Fritadeira Elétrica', 'cor': 'Preta', 'disponivel': True},
+   {'id': '8', 'nome': 'Fritadeira Elétrica', 'cor': 'Preta', 'disponivel': True},
     {'id': '9', 'nome': 'Mixer', 'cor': 'Branca', 'disponivel': True},
     {'id': '10', 'nome': 'Panela Elétrica de Arroz', 'cor': 'Rosa', 'disponivel': True}
 ]

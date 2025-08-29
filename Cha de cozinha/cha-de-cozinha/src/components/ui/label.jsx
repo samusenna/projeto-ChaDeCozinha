@@ -5,8 +5,6 @@ import * as LabelPrimitive from "@radix-ui/react-label"
 
 import { cn } from "/src/lib/utils.js"
 
-console.log(cn("a", "b")); // Deve imprimir: "a b"
-
 function Label({
   className,
   ...props
