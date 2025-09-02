@@ -18,9 +18,40 @@ CSV_PATH = os.path.join(os.path.dirname(__file__), 'database', 'escolhas.csv')
 
 # Lista de presentes (pode ser removida se só usar CSV)
 presentes = [
-    {"id": 1, "nome": "Conjunto de panelas", "cor": "Prata"},
-    {"id": 2, "nome": "Jogo de copos", "cor": "Transparente"},
-    {"id": 3, "nome": "Batedeira", "cor": "Vermelha"}
+    {"id": 1, "nome": "Aparelho de jantar"},
+    {"id": 2, "nome": "Jogo de panelas"},
+    {"id": 3, "nome": "Jogo de copos"},
+    {"id": 4, "nome": "Jogo de Talheres"},
+    {"id": 5, "nome": "Jogo de xícaras"},
+    {"id": 6, "nome": "Partos de sobremesa"},
+    {"id": 7, "nome": "Taças Para vinho"},
+    {"id": 8, "nome": "Faqueiro"},
+    {"id": 9, "nome": "Cuscuzeira"},
+    {"id": 10, "nome": "Peneira"},
+    {"id": 11, "nome": "Porta tempero preto giratório"},
+    {"id": 12, "nome": "Fruteira de mesa"},
+    {"id": 13, "nome": "Formas e assadeiras"},
+    {"id": 14, "nome": "Jarra de Suco"},
+    {"id": 15, "nome": "Panos de Prato"},
+    {"id": 16, "nome": "Tábua de vidro"},
+    {"id": 17, "nome": "Lixeira inox"},
+    {"id": 18, "nome": "Panela de pressão"},
+    {"id": 19, "nome": "Abridor de Lata"},
+    {"id": 20, "nome": "Escorredor de louças de inox"},
+    {"id": 21, "nome": "Escorredor de macarrão"},
+    {"id": 22, "nome": "Ralador"},
+    {"id": 23, "nome": "Frigideira"},
+    {"id": 24, "nome": "Potes de plástico Herméticos"},
+    {"id": 25, "nome": "Potes de vidro"},
+    {"id": 26, "nome": "Descascador"},
+    {"id": 27, "nome": "Funil"},
+    {"id": 28, "nome": "Suporte de papel toalha"},
+    {"id": 29, "nome": "Pano de pia"},
+    {"id": 30, "nome": "Copo medidor"},
+    {"id": 31, "nome": "Formas de Gelo"},
+    {"id": 32, "nome": "Petisqueira de bambu"},
+    {"id": 33, "nome": "Boleira"}
+
 ]
 
 # Função para criar CSV se não existir
@@ -29,15 +60,15 @@ def criar_csv():
         os.makedirs(os.path.dirname(CSV_PATH), exist_ok=True)
         with open(CSV_PATH, mode="w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
-            writer.writerow(["Convidado", "Presente", "Cor", "DataHora"])
+            writer.writerow(["Convidado", "Presente", "DataHora"])
 
 # Função para gravar escolha no CSV
-def salvar_escolha_csv(convidado, presente, cor):
+def salvar_escolha_csv(convidado, presente):
     criar_csv()  # garante que o arquivo exista
     data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open(CSV_PATH, mode="a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow([convidado, presente, cor, data_hora])
+        writer.writerow([convidado, presente, data_hora])
 
 # Servir frontend
 @app.route('/', defaults={'path': ''})
@@ -65,11 +96,11 @@ def listar_presentes():
 @app.route("/escolher-presente", methods=["POST"])
 def escolher_presente():
     dados = request.get_json()
-    if not dados or "convidado" not in dados or "presente" not in dados or "cor" not in dados:
+    if not dados or "convidado" not in dados or "presente" not in dados:
         return jsonify({"erro": "Dados inválidos"}), 400
 
-    salvar_escolha_csv(dados["convidado"], dados["presente"], dados["cor"])
-    print(f"Convidado {dados['convidado']} escolheu {dados['presente']} ({dados['cor']})")
+    salvar_escolha_csv(dados["convidado"], dados["presente"])
+    print(f"Convidado {dados['convidado']} escolheu {dados['presente']}")
 
     return jsonify({"sucesso": True, "mensagem": "Escolha registrada!"}), 200
 
