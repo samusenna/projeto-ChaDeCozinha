@@ -118,7 +118,7 @@ function App() {
         <div className="text-center mb-8">
           <div className="flex justify-center items-center gap-2 mb-4">
             <Heart className="text-rose-500 w-8 h-8" />
-            <h1 className="text-4xl font-bold text-gray-800">Nosso Chá de Cozinha</h1>
+            <h1 className="text-4xl font-bold text-gray-800">Chá de Cozinha Da Talita</h1>
             <Heart className="text-rose-500 w-8 h-8" />
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
@@ -239,7 +239,7 @@ function App() {
       {/* Rodapé */}
       <div className="text-center mt-12 pt-8 border-t border-gray-200">
         <p className="text-gray-600">
-          💕 Com amor e carinho, esperamos vocês em nossa celebração! 💕
+          💕 Com amor e carinho, espero você em minha celebração! 💕
         </p>
       </div>
     </div>
