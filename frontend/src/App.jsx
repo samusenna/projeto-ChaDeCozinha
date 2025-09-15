@@ -61,8 +61,7 @@ function App() {
 
       const dadosEscolha = {
         convidado: nomeConvidado.trim(),
-        presente: presenteSelecionado.nome,
-        cor: presenteSelecionado.cor
+        presente: presenteSelecionado.nome
       }
 
       const response = await fetch(`${API_BASE}/escolher-presente`, {
@@ -80,7 +79,7 @@ function App() {
         // Sucesso - recarregar lista de presentes
         await carregarPresentes()
 
-        setMensagem(`Obrigado, ${nomeConvidado}! Sua escolha foi registrada: ${presenteSelecionado.nome} ${presenteSelecionado.cor}.`)
+        setMensagem(`Obrigado, ${nomeConvidado}! Sua escolha foi registrada: ${presenteSelecionado.nome}.`)
         setTipoMensagem('sucesso')
 
         // Limpar formulário e fechar dialog
@@ -169,7 +168,9 @@ function App() {
         {presentes.map((presente) => (
           <Card key={presente.id} className="hover:shadow-lg transition-shadow duration-300 bg-white">
             <CardHeader className="text-center">
-              <CardComImagem key={presente.id} presenteId={presente.id} presenteSelecionado={presente.nome}>
+              <CardComImagem key={presente.id}
+                             presenteId={presente.id}
+                             presenteSelecionado={presente.nome}>
            </CardComImagem>
               <CardTitle className="text-xl text-gray-800">{presente.nome}</CardTitle>
             </CardHeader>
@@ -189,7 +190,6 @@ function App() {
       {/* Mensagem quando não há presentes */}
       {!carregando && presentes.length === 0 && (
         <div className="text-center py-12">
-          <Gift className="w-16 h-16 text-gray-400 mx-auto mb-4" />
           <h3 className="text-2xl font-semibold text-gray-600 mb-2">
             Todos os presentes foram escolhidos!
           </h3>
@@ -205,7 +205,7 @@ function App() {
           <DialogHeader>
             <DialogTitle>Confirmar Escolha</DialogTitle>
             <DialogDescription>
-              Você escolheu: <strong>{presenteSelecionado?.nome} {presenteSelecionado?.cor}</strong>
+              Você escolheu: <strong>{presenteSelecionado?.nome}</strong>
             </DialogDescription>
           </DialogHeader>
           <div className="space-y-4">

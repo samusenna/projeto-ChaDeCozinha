@@ -35,7 +35,26 @@ const IMAGENS_PRESENTES = {
   '30': 'src/img/CopoMedidor.jpg',
   '31': 'src/img/',
   '32': 'src/img/Petisqueira.jpg',
-  '33': 'src/img/Boleira.jpg'
+  '33': 'src/img/Boleira.jpg', 
+  '34': 'src/img/LixeiraCozinha.jpg',
+  '35': 'src/img/ToalhasBanho.jpg',
+  '36': 'src/img/ToalhasRosto.jpg',
+  '37': 'src/img/Utensilioslavabo.jpg', 
+  '38': 'src/img/TapeteBanheiro.jpg',
+  '39': 'src/img/Chuveiro.jpg',
+  '40': 'src/img/ACentoVaso.jpg',
+  '41': 'src/img/AcessoriosBanheiro.jpg',
+  '42': 'src/img/EscovaSanitaria.jpg', 
+  '43': 'src/img/Organizador.jpg',
+  '44': 'src/img/Cabides.jpg',
+  '45': 'src/img/Liquidificador.jpg',
+  '46': 'src/img/Mixer.jpg',
+  '47': 'src/img/Processador.jpg', 
+  '48': 'src/img/Espremedor.jpg',
+  '49': 'src/img/Batedeira.jpg',
+  '50': 'src/img/FerroDePassar.jpg',
+  '51': 'src/img/Chaleira.jpg',
+  '52': 'src/img/CochaSorvete.jpg'
 };
 
 function PresenteCardComImagem({ presenteId, nomePresente, children }) {

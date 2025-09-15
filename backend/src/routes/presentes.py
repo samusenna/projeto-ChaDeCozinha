@@ -26,7 +26,7 @@ PRESENTES_INICIAIS = [
     {'id': '14', 'nome': 'Jarra de Suco', 'disponivel': True},
     {'id': '15', 'nome': 'Panos de Prato', 'disponivel': True},
     {'id': '16', 'nome': 'Tábua de vidro', 'disponivel': True},
-    {'id': '17', 'nome': 'Lixeira inox',  'disponivel': True},
+    {'id': '17', 'nome': 'Lixeira inox de banheiro',  'disponivel': True},
     {'id': '18', 'nome': 'Panela de pressão', 'disponivel': True},
     {'id': '19', 'nome': 'Abridor de Lata', 'disponivel': True},
     {'id': '20', 'nome': 'Escorredor de louças de inox', 'disponivel': True}, 
@@ -35,14 +35,30 @@ PRESENTES_INICIAIS = [
     {'id': '23', 'nome': 'Frigideira', 'disponivel': True},
     {'id': '24', 'nome': 'Potes de plástico Herméticos', 'disponivel': True},
     {'id': '25', 'nome': 'Potes de vidro', 'disponivel': True},
-    {'id': '26', 'nome': 'Descascador', 'disponivel': True},
-    {'id': '27', 'nome': 'Funil',  'disponivel': True},
     {'id': '28', 'nome': 'Suporte de papel toalha', 'disponivel': True},
     {'id': '29', 'nome': 'Pano de pia', 'disponivel': True},
     {'id': '30', 'nome': 'Copo medidor', 'disponivel': True},
-    {'id': '31', 'nome': 'Formas de Gelo', 'disponivel': True},
     {'id': '32', 'nome': 'Petisqueira de bambu', 'disponivel': True},
-    {'id': '33', 'nome': 'Boleira', 'disponivel': True}
+    {'id': '33', 'nome': 'Boleira', 'disponivel': True},
+    {'id': '34', 'nome': 'Lixeira de cozinha', 'disponivel': True},
+    {'id': '35', 'nome': 'Toalhas de banho', 'disponivel': True},
+    {'id': '36', 'nome': 'Toalhas de rosto', 'disponivel': True},
+    {'id': '37', 'nome': 'Kit lavabo',  'disponivel': True},
+    {'id': '38', 'nome': 'Tapete banheiro', 'disponivel': True},
+    {'id': '39', 'nome': 'Chuveiro 220V 6800W', 'disponivel': True},
+    {'id': '40', 'nome': 'Assento para vaso sanitário', 'disponivel': True},
+    {'id': '41', 'nome': 'Acessorios para banheiro', 'disponivel': True},
+    {'id': '42', 'nome': 'Escova sanitária', 'disponivel': True},
+    {'id': '43', 'nome': 'Organizadores', 'disponivel': True},
+    {'id': '44', 'nome': 'Cabides', 'disponivel': True},
+    {'id': '45', 'nome': 'Liquitificador', 'disponivel': True},
+    {'id': '46', 'nome': 'Mixer', 'disponivel': True},
+    {'id': '47', 'nome': 'Processador',  'disponivel': True},
+    {'id': '48', 'nome': 'Espremedor de frutas', 'disponivel': True},
+    {'id': '49', 'nome': 'Batedeira', 'disponivel': True},
+    {'id': '50', 'nome': 'Ferro de passar', 'disponivel': True},
+    {'id': '51', 'nome': 'Chaleira Elétrica', 'disponivel': True},
+    {'id': '52', 'nome': 'Concha para sorvete', 'disponivel': True}    
     ]
 
 def inicializar_csv():
@@ -51,7 +67,7 @@ def inicializar_csv():
         os.makedirs(os.path.dirname(CSV_FILE), exist_ok=True)
         with open(CSV_FILE, 'w', newline='', encoding='utf-8') as file:
             writer = csv.writer(file)
-            writer.writerow(['Convidado', 'Presente', 'Cor', 'Data/Hora'])
+            writer.writerow(['Convidado', 'Presente', 'Data/Hora'])
 
 def obter_presentes_escolhidos():
     """Obtém a lista de presentes já escolhidos do CSV"""
@@ -63,8 +79,7 @@ def obter_presentes_escolhidos():
         reader = csv.DictReader(file)
         for row in reader:
             escolhidos.append({
-                'nome': row['Presente'],
-                'cor': row['Cor']
+                'nome': row['Presente']
             })
     return escolhidos
 
@@ -79,7 +94,7 @@ def listar_presentes():
         presentes_disponiveis = []
         for presente in PRESENTES_INICIAIS:
             ja_escolhido = any(
-                e['nome'] == presente['nome'] and e['cor'] == presente['cor'] 
+                e['nome'] == presente['nome']
                 for e in escolhidos
             )
             if not ja_escolhido:
@@ -95,7 +110,7 @@ def escolher_presente():
     try:
         dados = request.get_json()
         
-        if not dados or not dados.get('convidado') or not dados.get('presente') or not dados.get('cor'):
+        if not dados or not dados.get('convidado') or not dados.get('presente'):
             return jsonify({'erro': 'Dados incompletos'}), 400
         
         inicializar_csv()
@@ -103,7 +118,7 @@ def escolher_presente():
         # Verificar se o presente ainda está disponível
         escolhidos = obter_presentes_escolhidos()
         ja_escolhido = any(
-            e['nome'] == dados['presente'] and e['cor'] == dados['cor'] 
+            e['nome'] == dados['presente']
             for e in escolhidos
         )
         
@@ -116,7 +131,6 @@ def escolher_presente():
             writer.writerow([
                 dados['convidado'],
                 dados['presente'],
-                dados['cor'],
                 datetime.now().strftime('%d/%m/%Y %H:%M:%S')
             ])
         
@@ -124,6 +138,7 @@ def escolher_presente():
     
     except Exception as e:
         return jsonify({'erro': str(e)}), 500
+        
 
 @presentes_bp.route('/escolhas', methods=['GET'])
 def listar_escolhas():
@@ -139,7 +154,6 @@ def listar_escolhas():
                 escolhas.append({
                     'convidado': row['Convidado'],
                     'presente': row['Presente'],
-                    'cor': row['Cor'],
                     'data_hora': row['Data/Hora']
                 })
         
