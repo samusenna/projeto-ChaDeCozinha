@@ -61,7 +61,7 @@ function App() {
 
       const dadosEscolha = {
         convidado: nomeConvidado.trim(),
-        presente: presenteSelecionado.nome
+        presente: presenteSelecionado.nome,
       }
 
       const response = await fetch(`${API_BASE}/escolher-presente`, {
