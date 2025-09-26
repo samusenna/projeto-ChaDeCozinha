@@ -174,7 +174,7 @@ Uma aplicação web completa desenvolvida em React e Flask para gerenciar pedido
 2. **Frontend (React)**:
    ```bash
    cd cha-de-cozinha
-   pnpm run dev --host
+   npm run dev --host
    ```
    O frontend estará disponível em `http://localhost:5173`
 
