@@ -4,6 +4,7 @@ import csv
 import datetime
 from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS
+from flask_mail import Mail, Message  # Flask-Mail
 
 # NÃO ALTERAR: adiciona caminho para imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -16,12 +17,26 @@ CORS(app)  # habilitar CORS
 from src.models.user import db
 from src.routes.user import user_bp
 from src.routes.presentes import presentes_bp
-from flask_mail import Mail, Message  # Importar Flask-Mail e Message
+
+# =======================================
+# 📧 CONFIGURAÇÃO DE E-MAIL (SMTP)
+# =======================================
+# Exemplo com Gmail — substitua pelos seus dados
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = "chacozinha14@gmail.com"       # <-- altere aqui
+app.config["MAIL_PASSWORD"] = "avzm idxi kqtj ykdb" # <-- altere aqui
+app.config["MAIL_DEFAULT_SENDER"] = ("Chá de Cozinha", "schacozinha14@gmail.com")
+
+mail = Mail(app)
+
+# =======================================
 
 # Caminho do CSV
 CSV_PATH = os.path.join(os.path.dirname(__file__), 'database', 'escolhas.csv')
 
-# Lista de presentes (banco base)
+# Lista de presentes
 presentes = [
     {"id": 1, "nome": "Aparelho de jantar"},
     {"id": 2, "nome": "Jogo de panelas"},
@@ -84,11 +99,30 @@ def criar_csv():
 
 # Função para gravar escolha no CSV
 def salvar_escolha_csv(convidado, presente):
-    criar_csv()  # garante que o arquivo exista
+    criar_csv()
     data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open(CSV_PATH, mode="a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([convidado, presente, data_hora])
+
+# 📨 Função para enviar o CSV por e-mail
+def enviar_csv_por_email():
+    try:
+        with app.app_context():
+            msg = Message(
+                subject="🎁 Novo presente escolhido - Lista atualizada",
+                recipients=["samuelsenna21.09@gmail.com"],  # <-- altere aqui
+                body="Olá! Um novo presente foi escolhido. Em anexo está a lista atualizada."
+            )
+
+            # Adiciona o CSV como anexo
+            with open(CSV_PATH, "rb") as f:
+                msg.attach("escolhas.csv", "text/csv", f.read())
+
+            mail.send(msg)
+            print("📨 E-mail enviado com sucesso!")
+    except Exception as e:
+        print(f"⚠️ Erro ao enviar e-mail: {e}")
 
 # Função auxiliar: retorna os nomes já escolhidos
 def carregar_presentes_escolhidos():
@@ -101,19 +135,16 @@ def carregar_presentes_escolhidos():
                 nomes_escolhidos.add(nome)
     return nomes_escolhidos
 
-# Endpoint GET para listar apenas presentes disponíveis
+# Endpoint GET para listar presentes disponíveis
 @app.route("/presentes", methods=["GET"])
 def listar_presentes():
     nomes_escolhidos = carregar_presentes_escolhidos()
-
-    # Filtra a lista de presentes, removendo os já escolhidos
     presentes_disponiveis = [
         p for p in presentes if p["nome"].strip().lower() not in nomes_escolhidos
     ]
-
     return jsonify(presentes_disponiveis)
 
-# Endpoint POST para registrar escolha
+# Endpoint POST para registrar escolha e enviar e-mail
 @app.route("/escolher-presente", methods=["POST"])
 def escolher_presente():
     dados = request.get_json()
@@ -121,11 +152,12 @@ def escolher_presente():
         return jsonify({"erro": "Dados inválidos"}), 400
 
     salvar_escolha_csv(dados["convidado"], dados["presente"])
+    enviar_csv_por_email()  # <-- envia o CSV atualizado
     print(f"Convidado {dados['convidado']} escolheu {dados['presente']}")
 
-    return jsonify({"sucesso": True, "mensagem": "Escolha registrada!"}), 200
+    return jsonify({"sucesso": True, "mensagem": "Escolha registrada e e-mail enviado!"}), 200
 
-# Servir frontend (mantido)
+# Servir frontend
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
