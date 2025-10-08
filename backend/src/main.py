@@ -127,43 +127,6 @@ def escolher_presente():
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
 
-# Configuração do Flask-Mail
-app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
-app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT", 587))
-app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS", "true").lower() == "true"
-app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME", "samuelsenna21.09@gmail.com")
-app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD", "jesusefiel123")
-app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_DEFAULT_SENDER", "samuelsenna21.09@gmail.com")
-
-mail = Mail(app)
-
-# 🔹 Teste de envio de e-mail (executa quando o app sobe)
-with app.app_context():
-    try:
-        msg = Message(
-            subject="Teste de Email",
-            recipients=["samuelsenna13.13@gmail.com"],  # Troque pelo email real que receberá
-            body="Este é um e-mail de teste enviado pelo Flask-Mail."
-        )
-        mail.send(msg)
-        print("✅ Email enviado com sucesso!")
-    except Exception as e:
-        print(f"❌ Erro ao enviar email: {e}")
-
-# Passar a instância do mail para a blueprint de presentes (se ela realmente usar isso)
-presentes_bp.mail = mail
-
-# Registrar blueprints
-app.register_blueprint(user_bp, url_prefix='/api')
-app.register_blueprint(presentes_bp, url_prefix='/api')
-
-# Configuração do banco SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db.init_app(app)
-with app.app_context():
-    db.create_all()
 
 # Rota para servir arquivos estáticos
 @app.route('/', defaults={'path': ''})
