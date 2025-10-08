@@ -21,14 +21,14 @@ from flask_mail import Mail, Message  # Importar Flask-Mail e Message
 # Caminho do CSV
 CSV_PATH = os.path.join(os.path.dirname(__file__), 'database', 'escolhas.csv')
 
-# Lista de presentes (pode ser removida se só usar CSV)
+# Lista de presentes (banco base)
 presentes = [
     {"id": 1, "nome": "Aparelho de jantar"},
     {"id": 2, "nome": "Jogo de panelas"},
     {"id": 3, "nome": "Jogo de copos"},
     {"id": 4, "nome": "Jogo de Talheres"},
     {"id": 5, "nome": "Jogo de xícaras"},
-    {"id": 6, "nome": "Partos de sobremesa"},
+    {"id": 6, "nome": "Pratos de sobremesa"},
     {"id": 7, "nome": "Taças Para vinho"},
     {"id": 8, "nome": "Faqueiro"},
     {"id": 9, "nome": "Cuscuzeira"},
@@ -90,27 +90,28 @@ def salvar_escolha_csv(convidado, presente):
         writer = csv.writer(f)
         writer.writerow([convidado, presente, data_hora])
 
-# Servir frontend
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    static_folder_path = app.static_folder
-    if static_folder_path is None:
-        return "Static folder not configured", 404
+# Função auxiliar: retorna os nomes já escolhidos
+def carregar_presentes_escolhidos():
+    nomes_escolhidos = set()
+    if os.path.exists(CSV_PATH):
+        with open(CSV_PATH, newline='', encoding='utf-8') as f:
+            leitor = csv.DictReader(f)
+            for linha in leitor:
+                nome = linha["Presente"].strip().lower()
+                nomes_escolhidos.add(nome)
+    return nomes_escolhidos
 
-    if path != "" and os.path.exists(os.path.join(static_folder_path, path)):
-        return send_from_directory(static_folder_path, path)
-    else:
-        index_path = os.path.join(static_folder_path, 'index.html')
-        if os.path.exists(index_path):
-            return send_from_directory(static_folder_path, 'index.html')
-        else:
-            return "index.html not found", 404
-
-# Endpoint GET para listar presentes
+# Endpoint GET para listar apenas presentes disponíveis
 @app.route("/presentes", methods=["GET"])
 def listar_presentes():
-    return jsonify(presentes)
+    nomes_escolhidos = carregar_presentes_escolhidos()
+
+    # Filtra a lista de presentes, removendo os já escolhidos
+    presentes_disponiveis = [
+        p for p in presentes if p["nome"].strip().lower() not in nomes_escolhidos
+    ]
+
+    return jsonify(presentes_disponiveis)
 
 # Endpoint POST para registrar escolha
 @app.route("/escolher-presente", methods=["POST"])
@@ -124,11 +125,7 @@ def escolher_presente():
 
     return jsonify({"sucesso": True, "mensagem": "Escolha registrada!"}), 200
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000, debug=True)
-
-
-# Rota para servir arquivos estáticos
+# Servir frontend (mantido)
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
 def serve(path):
@@ -146,4 +143,4 @@ def serve(path):
             return "index.html not found", 404
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
