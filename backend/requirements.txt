@@ -1,3 +1,5 @@
 flask==2.3.3
 # ou se for FastAPI
 fastapi==0.111.1
+uvicorn==0.23.2
+
