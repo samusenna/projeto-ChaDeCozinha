@@ -3,14 +3,14 @@ import sys
 import csv
 import datetime
 from flask import Flask, send_from_directory, jsonify, request
+from fastapi import FastAPI
 from flask_cors import CORS
 from flask_mail import Mail, Message  # Flask-Mail
 
 
-
+app = FastAPI()  # errado, deve ser "app = FastAPI()"
 # NÃO ALTERAR: adiciona caminho para imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
-
 # Flask
 app = Flask(__name__, static_folder=os.path.join(os.path.dirname(__file__), 'static'))
 app.config['SECRET_KEY'] = 'asdf#FGSgvasgf$5$WGT'
