@@ -4,11 +4,14 @@ import csv
 import datetime
 from flask import Flask, send_from_directory, jsonify, request
 from fastapi import FastAPI
+from mangum import Mangum
 from flask_cors import CORS
 from flask_mail import Mail, Message  # Flask-Mail
 
 
 app = FastAPI()  # errado, deve ser "app = FastAPI()"
+# Adaptador para Serverless
+handler = Mangum(app)
 # NÃO ALTERAR: adiciona caminho para imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 # Flask
