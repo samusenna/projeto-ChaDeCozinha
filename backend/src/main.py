@@ -4,6 +4,9 @@ import csv
 import datetime
 from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS
+from flask_mail import Mail, Message  # Flask-Mail
+
+
 
 # NÃO ALTERAR: adiciona caminho para imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
@@ -16,19 +19,33 @@ CORS(app)  # habilitar CORS
 from src.models.user import db
 from src.routes.user import user_bp
 from src.routes.presentes import presentes_bp
-from flask_mail import Mail, Message  # Importar Flask-Mail e Message
+
+# =======================================
+# 📧 CONFIGURAÇÃO DE E-MAIL (SMTP)
+# =======================================
+# Exemplo com Gmail — substitua pelos seus dados
+app.config["MAIL_SERVER"] = "smtp.gmail.com"
+app.config["MAIL_PORT"] = 587
+app.config["MAIL_USE_TLS"] = True
+app.config["MAIL_USERNAME"] = "chacozinha14@gmail.com"       # <-- altere aqui
+app.config["MAIL_PASSWORD"] = "avzm idxi kqtj ykdb" # <-- altere aqui
+app.config["MAIL_DEFAULT_SENDER"] = ("Chá de Cozinha", "schacozinha14@gmail.com")
+
+mail = Mail(app)
+
+# =======================================
 
 # Caminho do CSV
 CSV_PATH = os.path.join(os.path.dirname(__file__), 'database', 'escolhas.csv')
 
-# Lista de presentes (pode ser removida se só usar CSV)
+# Lista de presentes
 presentes = [
     {"id": 1, "nome": "Aparelho de jantar"},
     {"id": 2, "nome": "Jogo de panelas"},
     {"id": 3, "nome": "Jogo de copos"},
     {"id": 4, "nome": "Jogo de Talheres"},
     {"id": 5, "nome": "Jogo de xícaras"},
-    {"id": 6, "nome": "Partos de sobremesa"},
+    {"id": 6, "nome": "Pratos de sobremesa"},
     {"id": 7, "nome": "Taças Para vinho"},
     {"id": 8, "nome": "Faqueiro"},
     {"id": 9, "nome": "Cuscuzeira"},
@@ -71,7 +88,7 @@ presentes = [
     {"id": 46, "nome": "Batedeira"},
     {"id": 47, "nome": "Ferro de passar"},
     {"id": 48, "nome": "Chaleira Elétrica"},
-    {"id": 49, "nome": "Concha para sorvete"},
+    {"id": 49, "nome": "Concha para sorvete"}
 ]
 
 # Função para criar CSV se não existir
@@ -84,11 +101,63 @@ def criar_csv():
 
 # Função para gravar escolha no CSV
 def salvar_escolha_csv(convidado, presente):
-    criar_csv()  # garante que o arquivo exista
+    criar_csv()
     data_hora = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     with open(CSV_PATH, mode="a", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
         writer.writerow([convidado, presente, data_hora])
+
+# 📨 Função para enviar o CSV por e-mail
+def enviar_csv_por_email():
+    try:
+        with app.app_context():
+            msg = Message(
+                subject="🎁 Novo presente escolhido - Lista atualizada",
+                recipients=["talitacsilva090@gmail.com"],  # <-- altere aqui
+                body="Olá! Um novo presente foi escolhido. Em anexo está a lista atualizada."
+            )
+
+            # Adiciona o CSV como anexo
+            with open(CSV_PATH, "rb") as f:
+                msg.attach("escolhas.csv", "text/csv", f.read())
+
+            mail.send(msg)
+            print("📨 E-mail enviado com sucesso!")
+    except Exception as e:
+        print(f"⚠️ Erro ao enviar e-mail: {e}")
+
+# Função auxiliar: retorna os nomes já escolhidos
+def carregar_presentes_escolhidos():
+    nomes_escolhidos = set()
+    if os.path.exists(CSV_PATH):
+        with open(CSV_PATH, newline='', encoding='utf-8') as f:
+            leitor = csv.DictReader(f)
+            for linha in leitor:
+                nome = linha["Presente"].strip().lower()
+                nomes_escolhidos.add(nome)
+    return nomes_escolhidos
+
+# Endpoint GET para listar presentes disponíveis
+@app.route("/presentes", methods=["GET"])
+def listar_presentes():
+    nomes_escolhidos = carregar_presentes_escolhidos()
+    presentes_disponiveis = [
+        p for p in presentes if p["nome"].strip().lower() not in nomes_escolhidos
+    ]
+    return jsonify(presentes_disponiveis)
+
+# Endpoint POST para registrar escolha e enviar e-mail
+@app.route("/escolher-presente", methods=["POST"])
+def escolher_presente():
+    dados = request.get_json()
+    if not dados or "convidado" not in dados or "presente" not in dados:
+        return jsonify({"erro": "Dados inválidos"}), 400
+
+    salvar_escolha_csv(dados["convidado"], dados["presente"])
+    enviar_csv_por_email()  # <-- envia o CSV atualizado
+    print(f"Convidado {dados['convidado']} escolheu {dados['presente']}")
+
+    return jsonify({"sucesso": True, "mensagem": "Escolha registrada e e-mail enviado!"}), 200
 
 # Servir frontend
 @app.route('/', defaults={'path': ''})
@@ -107,80 +176,5 @@ def serve(path):
         else:
             return "index.html not found", 404
 
-# Endpoint GET para listar presentes
-@app.route("/presentes", methods=["GET"])
-def listar_presentes():
-    return jsonify(presentes)
-
-# Endpoint POST para registrar escolha
-@app.route("/escolher-presente", methods=["POST"])
-def escolher_presente():
-    dados = request.get_json()
-    if not dados or "convidado" not in dados or "presente" not in dados:
-        return jsonify({"erro": "Dados inválidos"}), 400
-
-    salvar_escolha_csv(dados["convidado"], dados["presente"])
-    print(f"Convidado {dados['convidado']} escolheu {dados['presente']}")
-
-    return jsonify({"sucesso": True, "mensagem": "Escolha registrada!"}), 200
-
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)
-
-# Configuração do Flask-Mail
-app.config["MAIL_SERVER"] = os.environ.get("MAIL_SERVER", "smtp.gmail.com")
-app.config["MAIL_PORT"] = int(os.environ.get("MAIL_PORT", 587))
-app.config["MAIL_USE_TLS"] = os.environ.get("MAIL_USE_TLS", "true").lower() == "true"
-app.config["MAIL_USERNAME"] = os.environ.get("MAIL_USERNAME", "samuelsenna21.09@gmail.com")
-app.config["MAIL_PASSWORD"] = os.environ.get("MAIL_PASSWORD", "jesusefiel123")
-app.config["MAIL_DEFAULT_SENDER"] = os.environ.get("MAIL_DEFAULT_SENDER", "samuelsenna21.09@gmail.com")
-
-mail = Mail(app)
-
-# 🔹 Teste de envio de e-mail (executa quando o app sobe)
-with app.app_context():
-    try:
-        msg = Message(
-            subject="Teste de Email",
-            recipients=["samuelsenna13.13@gmail.com"],  # Troque pelo email real que receberá
-            body="Este é um e-mail de teste enviado pelo Flask-Mail."
-        )
-        mail.send(msg)
-        print("✅ Email enviado com sucesso!")
-    except Exception as e:
-        print(f"❌ Erro ao enviar email: {e}")
-
-# Passar a instância do mail para a blueprint de presentes (se ela realmente usar isso)
-presentes_bp.mail = mail
-
-# Registrar blueprints
-app.register_blueprint(user_bp, url_prefix='/api')
-app.register_blueprint(presentes_bp, url_prefix='/api')
-
-# Configuração do banco SQLite
-app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.path.join(os.path.dirname(__file__), 'database', 'app.db')}"
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db.init_app(app)
-with app.app_context():
-    db.create_all()
-
-# Rota para servir arquivos estáticos
-@app.route('/', defaults={'path': ''})
-@app.route('/<path:path>')
-def serve(path):
-    static_folder_path = app.static_folder
-    if static_folder_path is None:
-        return "Static folder not configured", 404
-
-    if path != "" and os.path.exists(os.path.join(static_folder_path, path)):
-        return send_from_directory(static_folder_path, path)
-    else:
-        index_path = os.path.join(static_folder_path, 'index.html')
-        if os.path.exists(index_path):
-            return send_from_directory(static_folder_path, 'index.html')
-        else:
-            return "index.html not found", 404
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5001, debug=True)
