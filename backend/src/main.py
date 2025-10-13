@@ -6,6 +6,8 @@ from flask import Flask, send_from_directory, jsonify, request
 from flask_cors import CORS
 from flask_mail import Mail, Message  # Flask-Mail
 
+
+
 # NÃO ALTERAR: adiciona caminho para imports
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
@@ -86,7 +88,7 @@ presentes = [
     {"id": 46, "nome": "Batedeira"},
     {"id": 47, "nome": "Ferro de passar"},
     {"id": 48, "nome": "Chaleira Elétrica"},
-    {"id": 49, "nome": "Concha para sorvete"},
+    {"id": 49, "nome": "Concha para sorvete"}
 ]
 
 # Função para criar CSV se não existir
@@ -111,7 +113,7 @@ def enviar_csv_por_email():
         with app.app_context():
             msg = Message(
                 subject="🎁 Novo presente escolhido - Lista atualizada",
-                recipients=["samuelsenna21.09@gmail.com"],  # <-- altere aqui
+                recipients=["talitacsilva090@gmail.com"],  # <-- altere aqui
                 body="Olá! Um novo presente foi escolhido. Em anexo está a lista atualizada."
             )
 
