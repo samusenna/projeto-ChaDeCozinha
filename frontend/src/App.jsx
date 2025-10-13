@@ -19,7 +19,7 @@ function App() {
   const [carregando, setCarregando] = useState(false)
 
   // URL base da API - ajustar conforme necessário
-  const API_BASE = 'http://localhost:5000'
+  const API_BASE = 'https://projeto-cha-de-cozinha-73bl.vercel.app/'
 
   useEffect(() => {
     carregarPresentes()
