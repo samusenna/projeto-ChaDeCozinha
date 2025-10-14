@@ -4,5 +4,3 @@ mangum
 uvicorn[standart]
 flask
 flask-cors
-
-

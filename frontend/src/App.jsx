@@ -19,7 +19,7 @@ function App() {
   const [carregando, setCarregando] = useState(false)
 
   // URL base da API - ajustar conforme necessário
-  const API_BASE = 'https://backend-cha.vercel.app/'
+  const API_BASE = 'https://sjsena.pythonanywhere.com/'
 
   useEffect(() => {
     carregarPresentes()
