@@ -34,7 +34,7 @@ const IMAGENS_PRESENTES = {
   '31': '/assets/LixeiraCozinha.jpg',
   '32': '/assets/ToalhasBanho.jpg',
   '33': '/assets/ToalhasRosto.jpg',
-  '34': '/assets/Utensilioslavabo.jpg', 
+  '34': '/assets/Lavabo.jpg', 
   '35': '/assets/TapeteBanheiro.jpg',
   '36': '/assets/Chuveiro.jpg',
   '37': '/assets/AcentoVaso.jpg',
