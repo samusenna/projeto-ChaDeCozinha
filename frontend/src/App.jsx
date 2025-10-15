@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import cores from './img/Cores.png'
+import cores from '/assets/Cores.png'
 import CardComImagem from './components/ui/cardImg.jsx'
 import { Button } from './components/ui/button.jsx'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from './components/ui/card.jsx'
@@ -8,6 +8,7 @@ import { Input } from './components/ui/input.jsx'
 import { Label } from './components/ui/label.jsx'
 import { Gift, Heart, CheckCircle, AlertCircle } from 'lucide-react'
 import './style.css'
+
 
 function App() {
   const [presentes, setPresentes] = useState([])
