@@ -1,7 +1,5 @@
 import React from 'react';
 
-// Mapeamento de IDs de presentes para caminhos de imagem
-// As imagens devem estar na pasta public/images ou em assets/images
 const IMAGENS_PRESENTES = {
   '1': '/assets/AparelhosDeJantar.jpg',
   '2': '/assets/JogoDePanelas.jpg', 
