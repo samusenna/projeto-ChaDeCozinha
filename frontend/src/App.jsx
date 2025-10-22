@@ -20,7 +20,8 @@ function App() {
   const [carregando, setCarregando] = useState(false)
 
   // URL base da API - ajustar conforme necessário
-  const API_BASE = 'https://sjsena.pythonanywhere.com/'
+  //const API_BASE = 'https://sjsena.pythonanywhere.com/'
+  const API_BASE = 'http://localhost:5000'
 
   useEffect(() => {
     carregarPresentes()
@@ -121,12 +122,27 @@ function App() {
             <h1 className="text-4xl font-bold text-gray-800">Chá de Cozinha Da Talita</h1>
             <Heart className="text-rose-500 w-8 h-8" />
           </div>
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto text-center">
+            O casamento vem aí e o nosso novo lar está ganhando forma! <br />
+            Preparamos esta lista com muito carinho para montar cada cantinho da casa com amor. 
+            Vai ser um prazer celebrar esse momento tão especial ao lado de mulheres incríveis como você!
+          </p><br />
+
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto text-center">
+            Observação: Assim que escolher o presente, por favor selecione no link ou me avise,
+            para que possamos evitar duplicidades.
+          </p><br />
+
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto text-center">
+            Necessário confirmar presença.
+          </p><br />
+
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto text-center">
+            Com carinho, Talita.
+          </p><br />
+
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Queridos amigos e familiares, escolham um presente especial para nossa nova cozinha!
-            Cada item será uma lembrança carinhosa de vocês em nosso lar.
-          </p>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Escolha um itém da palheta de cor abaixo.
+            Escolha um itém da paleta de cor abaixo.
           </p>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto">
                         Branco - Preto - Inox.
