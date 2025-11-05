@@ -49,7 +49,28 @@ const IMAGENS_PRESENTES = {
   '46': '/assets/Batedeira.jpg',
   '47': '/assets/FerroDePassar.jpg',
   '48': '/assets/Chaleira.jpg',
-  '49': '/assets/CochaSorvete.jpg'
+  '49': '/assets/CochaSorvete.jpg',
+  '50': '/assets/pratinhos de sobremesa.jpg',
+  '51': '/assets/Mini processador.jpg ',
+  '52': '/assets/Utensilios silicone.jpg', 
+  '53': '/assets/Amolador de facas.jpg',
+  '54': '/assets/Jogo de pratos.jpg',
+  '55': '/assets/Conjunto refratarios.jpg',
+  '56': '/assets/Saladeira.jpg',
+  '57': '/assets/Porta Frios.jpg',
+  '58': '/assets/Porta Ovos.jpg',
+  '59': '/assets/Tigela Bowl.jpg',
+  '60': '/assets/Pipoqueira.jpg',
+  '61': '/assets/Balde.jpg',
+  '62': '/assets/Mop Spray.jpg',
+  '63': '/assets/Varal Retratil.jpg',
+  '64': '/assets/Rodo.jpg',
+  '65': '/assets/Vassoura.jpg',
+  '66': '/assets/TabuaDePassar.jpg',
+  '67': '/assets/Pá de Lixo.jpg',
+  '68': '/assets/Pano de Chão.jpg',
+  '69': '/assets/Kit Café (Garrafa termica + Coador filtro de cafe).jpg',
+  '70': '/assets/Jogo de cama Queen.jpg'
 };
 
 function PresenteCardComImagem({ presenteId, nomePresente, children }) {

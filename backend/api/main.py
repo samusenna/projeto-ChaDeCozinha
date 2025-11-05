@@ -91,7 +91,28 @@ presentes = [
     {"id": 46, "nome": "Batedeira"},
     {"id": 47, "nome": "Ferro de passar"},
     {"id": 48, "nome": "Chaleira Elétrica"},
-    {"id": 49, "nome": "Concha para sorvete"}
+    {"id": 49, "nome": "Concha para sorvete"},
+    {"id": 50, "nome": "Pratinhos de sobremesa"},
+    {"id": 51, "nome": "Mini processador"},
+    {"id": 52, "nome": "Utensilios silicone"},
+    {"id": 53, "nome": "Amolador de facas"},
+    {"id": 54, "nome": "Jogo de pratos"},
+    {"id": 55, "nome": "Conjunto refratarios"},
+    {"id": 56, "nome": "Saladeira"},
+    {"id": 57, "nome": "Porta Frios"},
+    {"id": 58, "nome": "Porta Ovos"},
+    {"id": 59, "nome": "Tigela Bowl"},
+    {"id": 60, "nome": "Pipoqueira"},
+    {"id": 61, "nome": "Balde"},
+    {"id": 62, "nome": "Mop Spray"},
+    {"id": 63, "nome": "Varal Retratil"},
+    {"id": 64, "nome": "Rodo"},
+    {"id": 65, "nome": "Vassoura"},
+    {"id": 66, "nome": "Tabua de Passar"},
+    {"id": 67, "nome": "Pá de Lixo"},
+    {"id": 68, "nome": "Pano de Chão"},
+    {"id": 69, "nome": "Kit Café (Garrafa termica + Coador filtro de cafe)"},
+    {"id": 70, "nome": "Jogo de cama Queen"}
 ]
 
 # Função para criar CSV se não existir
