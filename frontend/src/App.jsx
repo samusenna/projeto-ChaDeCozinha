@@ -20,8 +20,8 @@ function App() {
   const [carregando, setCarregando] = useState(false)
 
   // URL base da API - ajustar conforme necessário
-  //const API_BASE = 'https://sjsena.pythonanywhere.com/'
-  const API_BASE = 'http://localhost:5000'
+  const API_BASE = 'https://sjsena.pythonanywhere.com/'
+  // const API_BASE = 'http://localhost:5000'
 
   useEffect(() => {
     carregarPresentes()
@@ -123,13 +123,13 @@ function App() {
             <Heart className="text-rose-500 w-8 h-8" />
           </div>
           <p className="text-lg text-gray-600 max-w-2xl mx-auto text-center">
-            O casamento vem aí e o nosso novo lar está ganhando forma! <br />
+            O casamento vem aí e o nosso novo lar está ganhando forma!
             Preparamos esta lista com muito carinho para montar cada cantinho da casa com amor. 
             Vai ser um prazer celebrar esse momento tão especial ao lado de mulheres incríveis como você!
           </p><br />
 
           <p className="text-lg text-gray-600 max-w-2xl mx-auto text-center">
-            Observação: Assim que escolher o presente, por favor selecione no link ou me avise,
+            Observação: Assim que escolher o presente, por favor selecione no link <br /> ou me avise,
             para que possamos evitar duplicidades.
           </p><br />
 
