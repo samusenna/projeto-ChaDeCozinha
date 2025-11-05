@@ -69,7 +69,7 @@ const IMAGENS_PRESENTES = {
   '66': '/assets/TabuaDePassar.jpg',
   '67': '/assets/Pá de Lixo.jpg',
   '68': '/assets/Pano de Chão.jpg',
-  '69': '/assets/Kit Café (Garrafa termica + Coador filtro de cafe).jpg',
+  '69': '/assets/Kit Café (Garrafa termica + Coador filtro de cafe)',
   '70': '/assets/Jogo de cama Queen.jpg'
 };
 
