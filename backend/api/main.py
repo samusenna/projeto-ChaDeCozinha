@@ -48,7 +48,7 @@ presentes = [
     {"id": 3, "nome": "Jogo de copos"},
     {"id": 4, "nome": "Jogo de Talheres"},
     {"id": 5, "nome": "Jogo de xícaras"},
-    {"id": 6, "nome": "Pratos de sobremesa"},
+    {"id": 6, "nome": "Taça de sobremesa"},
     {"id": 7, "nome": "Taças Para vinho"},
     {"id": 8, "nome": "Faqueiro"},
     {"id": 9, "nome": "Cuscuzeira"},
