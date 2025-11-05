@@ -111,7 +111,7 @@ presentes = [
     {"id": 66, "nome": "Tabua de Passar"},
     {"id": 67, "nome": "Pá de Lixo"},
     {"id": 68, "nome": "Pano de Chão"},
-    {"id": 69, "nome": "Kit Café (Garrafa termica + Coador filtro de cafe)"},
+    {"id": 69, "nome": "Kit Café (Garrafa termica + Coador filtro de cafe"},
     {"id": 70, "nome": "Jogo de cama Queen"}
 ]
 
